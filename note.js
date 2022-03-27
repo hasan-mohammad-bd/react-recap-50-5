@@ -1,13 +1,16 @@
 /*Note
-50_5-1 When to use Array and when to use Object
-
 
 To show data is data storage, object is suitable than array. */
 
-const db = {};
+//when the db will get the value from local storage, the value changed, thats why let is declared instead of const.
+let db = {};
 
 const addToDb = item => {
 
+    const storedTracker = localStorage.getItem("checka-tracker");
+    if(storedTracker){
+        db = JSON.parse(storedTracker)
+    }
     //if the property is already in the object, the items value will be increased. if the property is new, the property value will be 1.
     if(item in db){
         db[item] = db[item] + 1;
@@ -16,7 +19,22 @@ const addToDb = item => {
     else{
         db[item] = 1;
     }
+
+    localStorage.setItem("checka-tracker", JSON.stringify(db));
 }
+
+//removeItem form dataStorage.
+const removeItem = item => {
+    const storedTracker = localStorage.getItem("checka-tracker");
+    if(storedTracker){
+        const storedObject = JSON.parse(storedTracker);
+        //to remove specific data
+        delete storedObject[item];
+        //set the data again.
+        localStorage.setItem("checka-tracker",JSON.stringify(storedObject))
+    }
+}
+
 
 
 addToDb("hasan")
@@ -36,5 +54,9 @@ console.log(db);
 */
 
 //only workable in browser
+//# to setting up data, 
 localStorage.setItem("Chaka-tracker", JSON.stringify(db))
+//# to get the data.
+JSON.parse(localStorage.getItem("Chaka-tracker"))
 
+//
